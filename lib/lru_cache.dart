@@ -31,7 +31,8 @@ class LruCache<K, V> {
 
   void resize(int maxSize) {
     if (maxSize <= 0) {
-      throw ArgumentError.value(maxSize, 'maxSize', 'maxSize must be non-negative');
+      throw ArgumentError.value(
+          maxSize, 'maxSize', 'maxSize must be non-negative');
     }
     _maxSize = maxSize;
     _trimToSize(_maxSize);
@@ -124,8 +125,5 @@ class LruCache<K, V> {
 }
 
 T _requireNonNull<T>(T value, [String name]) {
-  if (value == null) {
-    throw ArgumentError.notNull(name);
-  }
-  return value;
+  return ArgumentError.checkNotNull(value, name);
 }

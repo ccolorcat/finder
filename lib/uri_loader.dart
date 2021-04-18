@@ -2,7 +2,7 @@
 // Date: 2021-01-30
 // GitHub: https://github.com/ccolorcat
 
-part of finder;
+import 'dart:io';
 
 typedef ProgressListener = void Function(int total, int cached, int percent);
 
@@ -13,7 +13,7 @@ typedef UriLoader = Future<File> Function(
   ProgressListener listener,
 });
 
-Future<File> _loadHttpUri(
+Future<File> loadHttpUri(
   Uri uri,
   File save, {
   Map<String, Object> headers,
@@ -28,7 +28,10 @@ Future<File> _loadHttpUri(
     final response = await request.close();
     final code = response.statusCode;
     if (code != HttpStatus.ok) {
-      throw HttpException('statusCode=$code, message=${response.reasonPhrase}', uri: uri);
+      throw HttpException(
+        'statusCode=$code, message=${response.reasonPhrase}',
+        uri: uri,
+      );
     }
     sink = save.openWrite();
     final total = response.contentLength;
@@ -51,7 +54,7 @@ Future<File> _loadHttpUri(
   }
 }
 
-Future<File> _loadFileUri(
+Future<File> loadFileUri(
   Uri uri,
   File save, {
   Map<String, Object> headers,

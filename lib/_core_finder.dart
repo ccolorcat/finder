@@ -8,25 +8,29 @@ class _CoreFinder extends Finder {
   final Future<Directory> _rootPath = _resolveCacheDirectory();
 
   final _loaders = <String, UriLoader>{
-    'http': _loadHttpUri,
-    'https': _loadHttpUri,
-    'file': _loadFileUri,
+    'http': loadHttpUri,
+    'https': loadHttpUri,
+    'file': loadFileUri,
+    kScheme: loadAssetUri,
   };
 
-  final _resolvers = <String, PathResolver>{};
+  final _resolvers = <String, PathResolver>{
+    kScheme: resolveAsset,
+  };
 
   final _cached = LruCache<Uri, Uint8List>(
     50 * 1024 * 1024,
     sizeOf: (_, v) => v.lengthInBytes,
   );
 
-  final _running = <Uri, _LoaderTask>{};
+  final _running = <Uri, LoaderTask>{};
 
   _CoreFinder() : super._internal();
 
   @override
   void registerUriLoader(String scheme, UriLoader loader) {
-    _loaders[scheme.toLowerCase()] = ArgumentError.checkNotNull(loader, 'loader');
+    _loaders[scheme.toLowerCase()] =
+        ArgumentError.checkNotNull(loader, 'loader');
   }
 
   @override
@@ -36,7 +40,8 @@ class _CoreFinder extends Finder {
 
   @override
   void registerPathResolver(String scheme, PathResolver resolver) {
-    _resolvers[scheme.toLowerCase()] = ArgumentError.checkNotNull(resolver, 'resolver');
+    _resolvers[scheme.toLowerCase()] =
+        ArgumentError.checkNotNull(resolver, 'resolver');
   }
 
   @override
@@ -52,7 +57,7 @@ class _CoreFinder extends Finder {
   }) async {
     var value = onlyMemory(uri);
     if (value != null) {
-      _log(() => 'hit memory by $uri');
+      log(() => 'hit memory by $uri');
       return value;
     }
 
@@ -72,7 +77,7 @@ class _CoreFinder extends Finder {
   }) async {
     final file = await _resolvePath(uri);
     if (file.existsSync()) {
-      _log(() => 'hit cached by $uri');
+      log(() => 'hit cached by $uri');
       return file;
     }
     return _load(uri, file, headers: headers, listener: listener);
@@ -97,7 +102,7 @@ class _CoreFinder extends Finder {
   Future<File> onlyStorage(Uri uri) async {
     final file = await _resolvePath(uri);
     if (file.existsSync()) {
-      _log(() => 'hit cached by $uri');
+      log(() => 'hit cached by $uri');
       return file;
     }
     return null;
@@ -122,7 +127,7 @@ class _CoreFinder extends Finder {
     return task.result.whenComplete(() => _removeTask(uri, task));
   }
 
-  _LoaderTask _computeTask(
+  LoaderTask _computeTask(
     Uri uri,
     File save, {
     Map<String, Object> headers,
@@ -130,11 +135,11 @@ class _CoreFinder extends Finder {
   }) {
     return _running.getOrPut(uri, () {
       final loader = _resolveLoader(uri);
-      return _LoaderTask(loader, uri, save, headers, listener);
+      return LoaderTask(loader, uri, save, headers, listener);
     });
   }
 
-  void _removeTask(Uri uri, _LoaderTask task) {
+  void _removeTask(Uri uri, LoaderTask task) {
     _running.removeWhere((key, value) => key == uri && value == task);
   }
 
@@ -154,4 +159,26 @@ class _CoreFinder extends Finder {
     }
     return loader;
   }
+}
+
+extension _MapFunc<K, V> on Map<K, V> {
+  V getOrPut(K key, V produce()) {
+    var value;
+    if (containsKey(key)) {
+      value = this[key];
+    } else if (produce != null) {
+      value = produce();
+      this[key] = value;
+    }
+    return value;
+  }
+}
+
+Future<Directory> _resolveCacheDirectory() async {
+  final dir = Platform.isAndroid
+      ? getExternalStorageDirectory()
+      : getApplicationSupportDirectory();
+  final path = await dir.then((value) => Directory('${value.path}/finder'));
+  log(() => 'find directory path: $path');
+  return path;
 }

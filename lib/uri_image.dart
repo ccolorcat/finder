@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:finder/uri_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,13 +11,16 @@ typedef ErrorBuilder = Widget Function(BuildContext context, Object error);
 typedef LoadingBuilder = Widget Function(BuildContext context);
 
 class UriImage extends StatelessWidget {
-  UriImage(
+  static ErrorBuilder defaultErrorBuilder;
+  static LoadingBuilder defaultLoadingBuilder;
+
+  const UriImage(
     this.uri, {
     Key key,
     this.scale = 1.0,
     this.frameBuilder,
-    this.loadingBuilder = _buildDefaultLoading,
-    this.errorBuilder = _buildDefaultError,
+    this.loadingBuilder,
+    this.errorBuilder,
     this.semanticLabel,
     this.excludeFromSemantics = false,
     this.width,
@@ -64,11 +68,13 @@ class UriImage extends StatelessWidget {
   Widget get _emptyWidget => const SizedBox.shrink();
 
   Widget _buildErrorWidget(BuildContext context, Object error) {
-    return errorBuilder != null ? errorBuilder(context, error) : _emptyWidget;
+    final builder = errorBuilder ?? defaultErrorBuilder;
+    return builder?.call(context, error) ?? _emptyWidget;
   }
 
   Widget _buildLoadingWidget(BuildContext context) {
-    return loadingBuilder != null ? loadingBuilder(context) : _emptyWidget;
+    final builder = loadingBuilder ?? defaultLoadingBuilder;
+    return builder?.call(context) ?? _emptyWidget;
   }
 
   Widget _buildImageFile(BuildContext context, File data) {
@@ -116,21 +122,4 @@ class UriImage extends StatelessWidget {
       },
     );
   }
-}
-
-Widget _buildDefaultLoading(BuildContext context) {
-  return ConstrainedBox(
-    constraints: BoxConstraints.tightFor(
-      width: 32.0,
-      height: 32.0,
-    ),
-    child: const CircularProgressIndicator(),
-  );
-}
-
-Widget _buildDefaultError(BuildContext context, Object error) {
-  return const Icon(
-    Icons.error,
-    size: 32,
-  );
 }

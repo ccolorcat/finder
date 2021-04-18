@@ -1,16 +1,19 @@
 // Author: cxx
 // Date: 2021-02-04
 // GitHub: https://github.com/ccolorcat
-part of finder;
 
-class _LoaderTask {
+import 'dart:io';
+import 'package:finder/uri_loader.dart';
+import 'package:finder/log.dart';
+
+class LoaderTask {
   final UriLoader _loader;
   final Uri _uri;
   final File _save;
   final Map<String, Object> _headers;
   final ProgressListener _listener;
 
-  _LoaderTask(
+  LoaderTask(
     this._loader,
     this._uri,
     this._save,
@@ -34,12 +37,31 @@ class _LoaderTask {
         headers: _headers,
         listener: _listener,
       );
-      _log(() => '<- $_uri download success');
+      log(() => '<- $_uri download success');
       return _safeRename(file, _save);
     } catch (e) {
-      _log(() => '<- $_uri download failure: $e');
+      log(() => '<- $_uri download failure: $e');
       _safeDelete(file ?? temp);
       rethrow;
     }
+  }
+}
+
+void _safeDelete(File file) {
+  try {
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
+  } catch (ignore) {}
+}
+
+Future<File> _safeRename(File from, File to) async {
+  try {
+    return from.renameSync(to.path);
+  } catch (e) {
+    if (to.existsSync()) {
+      return to;
+    }
+    rethrow;
   }
 }

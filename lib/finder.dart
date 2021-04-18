@@ -8,34 +8,31 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/services.dart';
+import 'package:finder/loader_task.dart';
+import 'package:finder/log.dart';
+import 'package:finder/lru_cache.dart';
+import 'package:finder/path_resolver.dart';
+import 'package:finder/uri_loader.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:finder/uris.dart';
 
-import 'lru_cache.dart';
+export 'package:finder/finder_image.dart';
+export 'package:finder/path_resolver.dart';
+export 'package:finder/uri_image.dart';
+export 'package:finder/uri_loader.dart';
+
+export 'package:finder/uris.dart' show withAsset;
 
 part '_core_finder.dart';
 
-part '_loader_task.dart';
-
-part '_utils.dart';
-
-part 'path_resolver.dart';
-
-part 'uri_loader.dart';
-
 abstract class Finder {
-  static const MethodChannel _channel = const MethodChannel('finder');
-
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-
   static Finder _singleton = _CoreFinder();
+
+  static String defaultPackageName;
 
   static bool loggable = true;
 
-  PathResolver defaultResolver = _defaultResolve;
+  PathResolver defaultResolver = defaultResolve;
 
   UriLoader defaultLoader;
 
