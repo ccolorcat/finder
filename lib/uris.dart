@@ -34,9 +34,10 @@ FutureOr<File> resolveAsset(Uri uri, Directory root) async {
   final queryies = uri.queryParameters;
   final package = queryies[_package];
   final asset = queryies[_name];
-  var keyName = package.isEmpty ? asset : '$package/$asset';
-  keyName = keyName.replaceAll('/', '_');
-  return File('${root.path}/$keyName');
+
+  var fileName = package.isEmpty ? asset : '$package/$asset';
+  fileName = fileName.replaceAll('/', '_');
+  return File('${root.path}/$fileName');
 }
 
 Future<File> loadAssetUri(
@@ -47,13 +48,10 @@ Future<File> loadAssetUri(
 }) async {
   _checkAsset(uri);
   final queryies = uri.queryParameters;
-  var package = queryies[_package];
-  if (package.isEmpty && Finder.defaultPackageName != null) {
-    package = Finder.defaultPackageName;
-  }
+  final package = queryies[_package];
   final asset = queryies[_name];
-  var keyName = package.isEmpty ? asset : 'packages/$package/$asset';
 
+  final keyName = package.isEmpty ? asset : 'packages/$package/$asset';
   final byteData = await rootBundle.load(keyName);
   await save.writeAsBytes(
     byteData.buffer.asUint8List(

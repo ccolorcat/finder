@@ -13,22 +13,19 @@ import 'package:finder/log.dart';
 import 'package:finder/lru_cache.dart';
 import 'package:finder/path_resolver.dart';
 import 'package:finder/uri_loader.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:finder/uris.dart';
+import 'package:path_provider/path_provider.dart';
 
 export 'package:finder/finder_image.dart';
 export 'package:finder/path_resolver.dart';
 export 'package:finder/uri_image.dart';
 export 'package:finder/uri_loader.dart';
-
 export 'package:finder/uris.dart' show withAsset;
 
 part '_core_finder.dart';
 
 abstract class Finder {
   static Finder _singleton = _CoreFinder();
-
-  static String defaultPackageName;
 
   static bool loggable = true;
 
