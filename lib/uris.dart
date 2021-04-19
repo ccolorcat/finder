@@ -40,7 +40,7 @@ FutureOr<File> resolveAsset(Uri uri, Directory root) async {
   return File('${root.path}/$fileName');
 }
 
-Future<File> loadAssetUri(
+Future<File> loadAsset(
   Uri uri,
   File save, {
   Map<String, Object> headers,

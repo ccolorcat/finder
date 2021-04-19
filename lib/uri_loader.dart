@@ -13,7 +13,7 @@ typedef UriLoader = Future<File> Function(
   ProgressListener listener,
 });
 
-Future<File> loadHttpUri(
+Future<File> loadHttp(
   Uri uri,
   File save, {
   Map<String, Object> headers,
@@ -54,7 +54,7 @@ Future<File> loadHttpUri(
   }
 }
 
-Future<File> loadFileUri(
+Future<File> loadFile(
   Uri uri,
   File save, {
   Map<String, Object> headers,

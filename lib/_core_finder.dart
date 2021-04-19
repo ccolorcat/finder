@@ -8,10 +8,10 @@ class _CoreFinder extends Finder {
   final Future<Directory> _rootPath = _resolveCacheDirectory();
 
   final _loaders = <String, UriLoader>{
-    'http': loadHttpUri,
-    'https': loadHttpUri,
-    'file': loadFileUri,
-    kScheme: loadAssetUri,
+    'http': loadHttp,
+    'https': loadHttp,
+    'file': loadFile,
+    kScheme: loadAsset,
   };
 
   final _resolvers = <String, PathResolver>{
