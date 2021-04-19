@@ -3,8 +3,8 @@
 // GitHub: https://github.com/ccolorcat
 
 import 'dart:io';
-import 'package:finder/uri_loader.dart';
-import 'package:finder/log.dart';
+import 'package:finder/src//uri_loader.dart';
+import 'package:finder/src//log.dart';
 
 class LoaderTask {
   final UriLoader _loader;

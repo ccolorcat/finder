@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:finder/finder.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:finder/uri_loader.dart';
+import 'package:finder/src//uri_loader.dart';
 import 'package:flutter/services.dart';
 
 const kScheme = 'finder';

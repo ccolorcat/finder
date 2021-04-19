@@ -8,21 +8,21 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:finder/loader_task.dart';
-import 'package:finder/log.dart';
-import 'package:finder/lru_cache.dart';
-import 'package:finder/path_resolver.dart';
-import 'package:finder/uri_loader.dart';
-import 'package:finder/uris.dart';
+import 'package:finder/src//uri_loader.dart';
+import 'package:finder/src/loader_task.dart';
+import 'package:finder/src/log.dart';
+import 'package:finder/src/lru_cache.dart';
+import 'package:finder/src/path_resolver.dart';
+import 'package:finder/src/uris.dart';
 import 'package:path_provider/path_provider.dart';
 
-export 'package:finder/finder_image.dart';
-export 'package:finder/path_resolver.dart';
-export 'package:finder/uri_image.dart';
-export 'package:finder/uri_loader.dart';
-export 'package:finder/uris.dart' show withAsset;
+export 'package:finder/src/finder_image.dart';
+export 'package:finder/src/path_resolver.dart';
+export 'package:finder/src/uri_image.dart';
+export 'package:finder/src//uri_loader.dart';
+export 'package:finder/src/uris.dart' show withAsset;
 
-part '_core_finder.dart';
+part 'src/_core_finder.dart';
 
 abstract class Finder {
   static Finder _singleton = _CoreFinder();

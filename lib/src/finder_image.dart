@@ -1,11 +1,10 @@
 // Author: cxx
 // GitHub: https://github.com/ccolorcat
 
-import 'dart:ffi';
 import 'dart:ui' as ui show Codec;
 
-import 'package:finder/finder.dart';
-import 'package:finder/uri_loader.dart';
+import 'package:finder/finder.dart' hide ProgressListener;
+import 'package:finder/src/uri_loader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
