@@ -4,11 +4,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:finder/finder.dart';
 import 'package:flutter/foundation.dart';
-
-import 'package:finder/src//uri_loader.dart';
 import 'package:flutter/services.dart';
+
+import 'uri_loader.dart';
 
 const kScheme = 'finder';
 const _host = 'asset';

@@ -8,19 +8,20 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:finder/src//uri_loader.dart';
-import 'package:finder/src/loader_task.dart';
-import 'package:finder/src/log.dart';
-import 'package:finder/src/lru_cache.dart';
-import 'package:finder/src/path_resolver.dart';
-import 'package:finder/src/uris.dart';
 import 'package:path_provider/path_provider.dart';
 
-export 'package:finder/src//uri_loader.dart';
-export 'package:finder/src/finder_image.dart';
-export 'package:finder/src/path_resolver.dart';
-export 'package:finder/src/uri_image.dart';
-export 'package:finder/src/uris.dart' show withAsset;
+import 'src//uri_loader.dart';
+import 'src/loader_task.dart';
+import 'src/log.dart';
+import 'src/lru_cache.dart';
+import 'src/path_resolver.dart';
+import 'src/uris.dart';
+
+export 'src//uri_loader.dart';
+export 'src/finder_image.dart';
+export 'src/path_resolver.dart';
+export 'src/uri_image.dart';
+export 'src/uris.dart' show withAsset;
 
 part 'src/_core_finder.dart';
 

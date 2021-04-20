@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:finder/src/uri_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:finder/finder.dart' hide ProgressListener;
+import '/finder/finder.dart' hide ProgressListener;
+import 'uri_loader.dart';
 
 typedef ErrorBuilder = Widget Function(BuildContext context, Object error);
 typedef LoadingBuilder = Widget Function(BuildContext context);
