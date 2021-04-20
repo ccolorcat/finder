@@ -4,13 +4,7 @@
 import 'dart:io';
 
 import 'package:finder/finder.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-const panda =
-    'http://www.ghost64.com/qqtupian/zixunImg/local/2018/11/14/15421855672417.jpeg';
-const weChat =
-    'https://dldir1.qq.com/weixin/android/weixin801android1840_arm64.apk';
 
 class DownloadPage extends StatefulWidget {
   DownloadPage(

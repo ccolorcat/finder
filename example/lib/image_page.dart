@@ -4,7 +4,7 @@
 import 'package:finder/finder.dart';
 import 'package:flutter/material.dart';
 
-class ImagePage extends StatefulWidget {
+class ImagePage extends StatelessWidget {
   ImagePage(
     this.uri, {
     this.title = 'image demo',
@@ -16,22 +16,17 @@ class ImagePage extends StatefulWidget {
   final Uri uri;
 
   @override
-  State<StatefulWidget> createState() => _ImagePageState();
-}
-
-class _ImagePageState extends State<ImagePage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Align(
           alignment: Alignment.center,
           child: Image(
-            image: FinderImage(widget.uri),
+            image: FinderImage(uri),
             fit: BoxFit.cover,
           ),
         ),

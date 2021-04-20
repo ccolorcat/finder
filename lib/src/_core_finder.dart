@@ -18,7 +18,7 @@ class _CoreFinder extends Finder {
     kScheme: resolveAsset,
   };
 
-  final _cached = LruCache<Uri, Uint8List>(
+  var _cached = LruCache<Uri, Uint8List>(
     50 * 1024 * 1024,
     sizeOf: (_, v) => v.lengthInBytes,
   );
@@ -111,6 +111,14 @@ class _CoreFinder extends Finder {
   @override
   Uint8List onlyMemory(Uri uri) {
     return _cached[uri];
+  }
+
+  @override
+  void memoryCachePolicy(
+    int maxSize, {
+    SizeOf<Uri, Uint8List> sizeOf = defaultSizeOf,
+  }) {
+    _cached = LruCache(maxSize, sizeOf: sizeOf);
   }
 
   void _cacheToMemory(Uri uri, Uint8List data) {

@@ -6,7 +6,7 @@ import 'dart:collection';
 
 typedef SizeOf<K, V> = int Function(K, V);
 
-int _defaultSizeOf(dynamic key, dynamic value) => 1;
+int defaultSizeOf(dynamic key, dynamic value) => 1;
 
 class LruCache<K, V> {
   LinkedHashMap<K, V> _cache;
@@ -20,7 +20,7 @@ class LruCache<K, V> {
 
   int get length => _cache.length;
 
-  LruCache(int maxSize, {SizeOf<K, V> sizeOf = _defaultSizeOf}) {
+  LruCache(int maxSize, {SizeOf<K, V> sizeOf = defaultSizeOf}) {
     if (maxSize <= 0) {
       throw ArgumentError.value(maxSize, 'maxSize', 'maxSize must be positive');
     }

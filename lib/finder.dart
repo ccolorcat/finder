@@ -16,10 +16,10 @@ import 'package:finder/src/path_resolver.dart';
 import 'package:finder/src/uris.dart';
 import 'package:path_provider/path_provider.dart';
 
+export 'package:finder/src//uri_loader.dart';
 export 'package:finder/src/finder_image.dart';
 export 'package:finder/src/path_resolver.dart';
 export 'package:finder/src/uri_image.dart';
-export 'package:finder/src//uri_loader.dart';
 export 'package:finder/src/uris.dart' show withAsset;
 
 part 'src/_core_finder.dart';
@@ -27,30 +27,41 @@ part 'src/_core_finder.dart';
 abstract class Finder {
   static Finder _singleton = _CoreFinder();
 
-  static bool loggable = true;
+  static bool loggable = false;
 
   PathResolver defaultResolver = defaultResolve;
 
+  /// If no [UriLoader] for specified [Uri]，this will be used.
   UriLoader defaultLoader;
 
   factory Finder() => _singleton;
 
   Finder._internal();
 
+  /// Register a [UriLoader] for specified [scheme]
+  /// scheme: http, https, file etc.
+  /// http, https, file and [KScheme] provided by default.
   void registerUriLoader(String scheme, UriLoader loader);
 
   void unregisterUriLoader(String scheme);
 
+  /// Register a [PathResolver] for specified [scheme]
+  /// scheme: http, https, file etc.
+  /// [KScheme] and globale [defaultResolver] provided by default.
   void registerPathResolver(String scheme, PathResolver resolver);
 
   void unregisterPathResolver(String scheme);
 
+  /// This will be cached to disk and memory.
+  /// [headers] will be used for http/https [Uri]
   Future<Uint8List> getData(
     Uri uri, {
     Map<String, Object> headers,
     ProgressListener listener,
   });
 
+  /// This will be cached to disk.
+  /// [headers] will be used for http/https [Uri]
   Future<File> getFile(
     Uri uri, {
     Map<String, Object> headers,
@@ -66,4 +77,9 @@ abstract class Finder {
   Future<File> onlyStorage(Uri uri);
 
   Uint8List onlyMemory(Uri uri);
+
+  void memoryCachePolicy(
+    int maxSize, {
+    SizeOf<Uri, Uint8List> sizeOf = defaultSizeOf,
+  });
 }

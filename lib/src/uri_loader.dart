@@ -4,8 +4,12 @@
 
 import 'dart:io';
 
+/// [total] the file's size
+/// [cached] cached file's size
+/// [percent] the progress [0, 100]
 typedef ProgressListener = void Function(int total, int cached, int percent);
 
+/// Load the file from [uri] and save to [save]
 typedef UriLoader = Future<File> Function(
   Uri uri,
   File save, {
