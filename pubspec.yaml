@@ -1,8 +1,8 @@
 name: finder
-description: A new Flutter plugin.
+description: A cache manager for Flutter.
 version: 0.0.1
-author:
-homepage:
+author: ccolorcat
+homepage: https://github.com/ccolorcat/finder
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
