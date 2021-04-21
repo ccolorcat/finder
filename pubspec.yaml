@@ -1,6 +1,6 @@
 name: finder
-description: A cache manager for Flutter.
-version: 0.0.1
+description: A cache manager for flutter, flexible and easy-to-use.
+version: 0.0.2
 author: ccolorcat
 homepage: https://github.com/ccolorcat/finder
 

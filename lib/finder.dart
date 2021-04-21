@@ -10,14 +10,14 @@ import 'dart:typed_data';
 
 import 'package:path_provider/path_provider.dart';
 
-import 'src//uri_loader.dart';
+import 'src/uri_loader.dart';
 import 'src/loader_task.dart';
 import 'src/log.dart';
 import 'src/lru_cache.dart';
 import 'src/path_resolver.dart';
 import 'src/uris.dart';
 
-export 'src//uri_loader.dart';
+export 'src/uri_loader.dart';
 export 'src/finder_image.dart';
 export 'src/path_resolver.dart';
 export 'src/uri_image.dart';

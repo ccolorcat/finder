@@ -6,7 +6,7 @@ import 'dart:ui' as ui show Codec;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import '/finder/finder.dart' hide ProgressListener;
+import '../finder.dart' hide ProgressListener;
 import 'uri_loader.dart';
 
 class FinderImage extends ImageProvider<FinderImage> {

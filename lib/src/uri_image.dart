@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '/finder/finder.dart' hide ProgressListener;
+import '../finder.dart' hide ProgressListener;
 import 'uri_loader.dart';
 
 typedef ErrorBuilder = Widget Function(BuildContext context, Object error);
