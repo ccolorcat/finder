@@ -10,3 +10,7 @@
 ## 1.0.0
 
 * migrate to null safety
+
+## 1.0.1
+
+* update documents
