@@ -13,18 +13,18 @@ typedef ProgressListener = void Function(int total, int cached, int percent);
 typedef UriLoader = Future<File> Function(
   Uri uri,
   File save, {
-  Map<String, Object> headers,
-  ProgressListener listener,
+  Map<String, Object>? headers,
+  ProgressListener? listener,
 });
 
 Future<File> loadHttp(
   Uri uri,
   File save, {
-  Map<String, Object> headers,
-  ProgressListener listener,
+  Map<String, Object>? headers,
+  ProgressListener? listener,
 }) async {
-  HttpClient client;
-  IOSink sink;
+  late HttpClient client;
+  IOSink? sink;
   try {
     client = HttpClient();
     final request = await client.getUrl(uri);
@@ -54,15 +54,15 @@ Future<File> loadHttp(
     return save;
   } finally {
     await sink?.close();
-    client?.close();
+    client.close();
   }
 }
 
 Future<File> loadFile(
   Uri uri,
   File save, {
-  Map<String, Object> headers,
-  ProgressListener listener,
+  Map<String, Object>? headers,
+  ProgressListener? listener,
 }) async {
   File src = File(uri.toFilePath());
   if (!src.existsSync()) {

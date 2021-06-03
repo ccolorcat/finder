@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class DownloadPage extends StatefulWidget {
   DownloadPage(
     this.uri, {
-    Key key,
+    Key? key,
     this.title = 'download demo',
   }) : super(key: key);
 
@@ -21,7 +21,7 @@ class DownloadPage extends StatefulWidget {
 }
 
 class _DownloadPageState extends State<DownloadPage> {
-  File _file;
+  File? _file;
   int _percent = 0;
 
   Future<void> _handlerClick() async {

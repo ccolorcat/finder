@@ -29,31 +29,29 @@ class _CoreFinder extends Finder {
 
   @override
   void registerUriLoader(String scheme, UriLoader loader) {
-    _loaders[scheme.toLowerCase()] =
-        ArgumentError.checkNotNull(loader, 'loader');
+    _loaders[scheme.toLowerCase()] = loader;
   }
 
   @override
   void unregisterUriLoader(String scheme) {
-    _loaders.remove(scheme?.toLowerCase());
+    _loaders.remove(scheme.toLowerCase());
   }
 
   @override
   void registerPathResolver(String scheme, PathResolver resolver) {
-    _resolvers[scheme.toLowerCase()] =
-        ArgumentError.checkNotNull(resolver, 'resolver');
+    _resolvers[scheme.toLowerCase()] = resolver;
   }
 
   @override
   void unregisterPathResolver(String scheme) {
-    _resolvers.remove(scheme?.toLowerCase());
+    _resolvers.remove(scheme.toLowerCase());
   }
 
   @override
   Future<Uint8List> getData(
     Uri uri, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   }) async {
     var value = onlyMemory(uri);
     if (value != null) {
@@ -62,18 +60,19 @@ class _CoreFinder extends Finder {
     }
 
     final file = await getFile(uri, headers: headers, listener: listener);
-    if (file?.existsSync() == true) {
+    if (file.existsSync()) {
       value = file.readAsBytesSync();
       _cacheToMemory(uri, value);
+      return value;
     }
-    return value;
+    throw AssertionError("the file not exists.");
   }
 
   @override
   Future<File> getFile(
     Uri uri, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   }) async {
     final file = await _resolvePath(uri);
     if (file.existsSync()) {
@@ -86,20 +85,15 @@ class _CoreFinder extends Finder {
   @override
   Future<File> onlyRemote(
     Uri uri, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   }) async {
     final save = await _resolvePath(uri);
-    return _load(
-      uri,
-      save,
-      headers: headers,
-      listener: listener,
-    );
+    return _load(uri, save, headers: headers, listener: listener);
   }
 
   @override
-  Future<File> onlyStorage(Uri uri) async {
+  Future<File?> onlyStorage(Uri uri) async {
     final file = await _resolvePath(uri);
     if (file.existsSync()) {
       log(() => 'hit cached by $uri');
@@ -109,7 +103,7 @@ class _CoreFinder extends Finder {
   }
 
   @override
-  Uint8List onlyMemory(Uri uri) {
+  Uint8List? onlyMemory(Uri uri) {
     return _cached[uri];
   }
 
@@ -128,8 +122,8 @@ class _CoreFinder extends Finder {
   Future<File> _load(
     Uri uri,
     File save, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   }) async {
     final task = _computeTask(uri, save, headers: headers, listener: listener);
     return task.result.whenComplete(() => _removeTask(uri, task));
@@ -138,8 +132,8 @@ class _CoreFinder extends Finder {
   LoaderTask _computeTask(
     Uri uri,
     File save, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   }) {
     return _running.getOrPut(uri, () {
       final loader = _resolveLoader(uri);
@@ -154,9 +148,6 @@ class _CoreFinder extends Finder {
   Future<File> _resolvePath(Uri uri) async {
     final root = await _rootPath;
     final resolver = _resolvers[uri.scheme] ?? defaultResolver;
-    if (resolver == null) {
-      throw UnsupportedError('no PathResolver support scheme: ${uri.scheme}');
-    }
     return resolver(uri, root);
   }
 
@@ -174,7 +165,7 @@ extension _MapFunc<K, V> on Map<K, V> {
     var value;
     if (containsKey(key)) {
       value = this[key];
-    } else if (produce != null) {
+    } else {
       value = produce();
       this[key] = value;
     }
@@ -186,7 +177,7 @@ Future<Directory> _resolveCacheDirectory() async {
   final dir = Platform.isAndroid
       ? getExternalStorageDirectory()
       : getApplicationSupportDirectory();
-  final path = await dir.then((value) => Directory('${value.path}/finder'));
+  final path = await dir.then((value) => Directory('${value!.path}/finder'));
   log(() => 'find directory path: $path');
   return path;
 }

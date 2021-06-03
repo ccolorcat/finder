@@ -7,16 +7,16 @@ import 'package:flutter/widgets.dart';
 import '../finder.dart' hide ProgressListener;
 import 'uri_loader.dart';
 
-typedef ErrorBuilder = Widget Function(BuildContext context, Object error);
+typedef ErrorBuilder = Widget Function(BuildContext context, Object? error);
 typedef LoadingBuilder = Widget Function(BuildContext context);
 
 class UriImage extends StatelessWidget {
-  static ErrorBuilder defaultErrorBuilder;
-  static LoadingBuilder defaultLoadingBuilder;
+  static ErrorBuilder? defaultErrorBuilder;
+  static LoadingBuilder? defaultLoadingBuilder;
 
   const UriImage(
     this.uri, {
-    Key key,
+    Key? key,
     this.scale = 1.0,
     this.frameBuilder,
     this.loadingBuilder,
@@ -43,31 +43,31 @@ class UriImage extends StatelessWidget {
 
   final Uri uri;
   final double scale;
-  final ImageFrameBuilder frameBuilder;
-  final LoadingBuilder loadingBuilder;
-  final ErrorBuilder errorBuilder;
-  final String semanticLabel;
+  final ImageFrameBuilder? frameBuilder;
+  final LoadingBuilder? loadingBuilder;
+  final ErrorBuilder? errorBuilder;
+  final String? semanticLabel;
   final bool excludeFromSemantics;
-  final double width;
-  final double height;
-  final Color color;
-  final BlendMode colorBlendMode;
-  final BoxFit fit;
+  final double? width;
+  final double? height;
+  final Color? color;
+  final BlendMode? colorBlendMode;
+  final BoxFit? fit;
   final AlignmentGeometry alignment;
   final ImageRepeat repeat;
-  final Rect centerSlice;
+  final Rect? centerSlice;
   final bool matchTextDirection;
   final bool gaplessPlayback;
   final FilterQuality filterQuality;
   final bool isAntiAlias;
-  final Map<String, String> headers;
-  final int cacheWidth;
-  final int cacheHeight;
-  final ProgressListener listener;
+  final Map<String, String>? headers;
+  final int? cacheWidth;
+  final int? cacheHeight;
+  final ProgressListener? listener;
 
   Widget get _emptyWidget => const SizedBox.shrink();
 
-  Widget _buildErrorWidget(BuildContext context, Object error) {
+  Widget _buildErrorWidget(BuildContext context, Object? error) {
     final builder = errorBuilder ?? defaultErrorBuilder;
     return builder?.call(context, error) ?? _emptyWidget;
   }
@@ -113,7 +113,7 @@ class UriImage extends StatelessWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _buildImageFile(context, snapshot.data);
+          return _buildImageFile(context, snapshot.data!);
         }
         if (snapshot.hasError) {
           return _buildErrorWidget(context, snapshot.error);

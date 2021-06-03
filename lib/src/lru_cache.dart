@@ -9,9 +9,9 @@ typedef SizeOf<K, V> = int Function(K, V);
 int defaultSizeOf(dynamic key, dynamic value) => 1;
 
 class LruCache<K, V> {
-  LinkedHashMap<K, V> _cache;
-  int _maxSize;
-  SizeOf<K, V> _sizeOf;
+  late LinkedHashMap<K, V> _cache;
+  late int _maxSize;
+  late SizeOf<K, V> _sizeOf;
   int _size = 0;
 
   int get size => _size;
@@ -24,7 +24,7 @@ class LruCache<K, V> {
     if (maxSize <= 0) {
       throw ArgumentError.value(maxSize, 'maxSize', 'maxSize must be positive');
     }
-    _sizeOf = _requireNonNull(sizeOf, 'sizeOf');
+    _sizeOf = sizeOf;
     _maxSize = maxSize;
     _cache = LinkedHashMap();
   }
@@ -32,22 +32,26 @@ class LruCache<K, V> {
   void resize(int maxSize) {
     if (maxSize <= 0) {
       throw ArgumentError.value(
-          maxSize, 'maxSize', 'maxSize must be non-negative');
+        maxSize,
+        'maxSize',
+        'maxSize must be non-negative',
+      );
     }
     _maxSize = maxSize;
     _trimToSize(_maxSize);
   }
 
-  V operator [](K key) => _get(key);
+  V? operator [](K key) => _get(key);
 
   void operator []=(K key, V value) => _put(key, value);
 
-  V remove(K key) => _remove(key);
+  V? remove(K key) => _remove(key);
 
   V getOrPut(K key, V produce()) {
     var value = _get(key);
-    if (value == null && (value = produce?.call()) != null) {
-      _put(key, value);
+    if (value == null) {
+      value = produce();
+      _put(key, value!);
     }
     return value;
   }
@@ -61,8 +65,7 @@ class LruCache<K, V> {
     return Map.unmodifiable(_cache);
   }
 
-  V _get(K key) {
-    _requireNonNull(key, 'key');
+  V? _get(K key) {
     final value = _cache.remove(key);
     if (value != null) {
       _cache[key] = value;
@@ -71,8 +74,6 @@ class LruCache<K, V> {
   }
 
   V _put(K key, V value) {
-    _requireNonNull(key, 'key');
-    _requireNonNull(value, 'value');
     var previous = _remove(key);
     _cache[key] = value;
     _size += _safeSizeOf(key, value);
@@ -80,8 +81,8 @@ class LruCache<K, V> {
     return previous ?? value;
   }
 
-  V _remove(K key) {
-    var previous = _cache.remove(_requireNonNull(key, 'key'));
+  V? _remove(K key) {
+    var previous = _cache.remove(key);
     if (previous != null) {
       _size -= _safeSizeOf(key, previous);
     }
@@ -122,8 +123,4 @@ class LruCache<K, V> {
   String toString() {
     return 'LruCache{cache: $_cache, maxSize: $_maxSize, size: $_size}';
   }
-}
-
-T _requireNonNull<T>(T value, [String name]) {
-  return ArgumentError.checkNotNull(value, name);
 }

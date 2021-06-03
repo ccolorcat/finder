@@ -7,8 +7,8 @@ import 'download_page.dart';
 
 const weChat =
     'https://dldir1.qq.com/weixin/android/weixin801android1840_arm64.apk';
-const panda =
-    'http://www.ghost64.com/qqtupian/zixunImg/local/2018/11/14/15421855672417.jpeg';
+const image =
+    'https://pic4.zhimg.com/v2-43f8f1ab2ad7ae1848c4ae21ef0cadc4_r.jpg?source=1940ef5c';
 
 void main() {
   runApp(MyApp());
@@ -34,18 +34,17 @@ class _MyAppState extends State<MyApp> {
 }
 
 class HomePage extends StatelessWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   void _jumpTo(BuildContext context, Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => page));
   }
 
   Widget _buildButton(BuildContext context, String text, Widget nextPage) {
-    return FlatButton(
+    return MaterialButton(
       onPressed: () => _jumpTo(context, nextPage),
-      color: Theme.of(context).accentColor,
       child: Text(text),
-      colorBrightness: Brightness.dark,
+      color: Theme.of(context).buttonColor,
       minWidth: double.infinity,
     );
   }
@@ -69,7 +68,7 @@ class HomePage extends StatelessWidget {
             context,
             'remote image demo',
             ImagePage(
-              Uri.parse(panda),
+              Uri.parse(image),
               title: 'remote image demo',
             ),
           ),

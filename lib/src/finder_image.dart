@@ -15,12 +15,11 @@ class FinderImage extends ImageProvider<FinderImage> {
     this.scale = 1.0,
     this.headers,
     this.listener,
-  })  : assert(uri != null),
-        assert(scale != null);
+  });
 
   FinderImage.withAsset({
-    @required String assetName,
-    String packageName,
+    required String assetName,
+    String? packageName,
     this.scale = 1.0,
   })  : uri = withAsset(assetName: assetName, packageName: packageName),
         headers = null,
@@ -28,8 +27,8 @@ class FinderImage extends ImageProvider<FinderImage> {
 
   final Uri uri;
   final double scale;
-  final Map<String, Object> headers;
-  final ProgressListener listener;
+  final Map<String, Object>? headers;
+  final ProgressListener? listener;
 
   @override
   Future<FinderImage> obtainKey(ImageConfiguration configuration) {
@@ -57,7 +56,7 @@ class FinderImage extends ImageProvider<FinderImage> {
     );
     if (bytes.lengthInBytes == 0) {
       // The file may become available later.
-      PaintingBinding.instance.imageCache.evict(key);
+      PaintingBinding.instance!.imageCache!.evict(key);
       throw StateError('$uri cannot be loaded as an image.');
     }
     return await decode(bytes);

@@ -33,7 +33,7 @@ abstract class Finder {
   PathResolver defaultResolver = defaultResolve;
 
   /// If no [UriLoader] for specified [Uri]，this will be used.
-  UriLoader defaultLoader;
+  UriLoader? defaultLoader;
 
   factory Finder() => _singleton;
 
@@ -48,7 +48,7 @@ abstract class Finder {
 
   /// Register a [PathResolver] for specified [scheme]
   /// scheme: http, https, file etc.
-  /// [KScheme] and globale [defaultResolver] provided by default.
+  /// [KScheme] and global [defaultResolver] provided by default.
   void registerPathResolver(String scheme, PathResolver resolver);
 
   void unregisterPathResolver(String scheme);
@@ -57,27 +57,27 @@ abstract class Finder {
   /// [headers] will be used for http/https [Uri]
   Future<Uint8List> getData(
     Uri uri, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   });
 
   /// This will be cached to disk.
   /// [headers] will be used for http/https [Uri]
   Future<File> getFile(
     Uri uri, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   });
 
   Future<File> onlyRemote(
     Uri uri, {
-    Map<String, Object> headers,
-    ProgressListener listener,
+    Map<String, Object>? headers,
+    ProgressListener? listener,
   });
 
-  Future<File> onlyStorage(Uri uri);
+  Future<File?> onlyStorage(Uri uri);
 
-  Uint8List onlyMemory(Uri uri);
+  Uint8List? onlyMemory(Uri uri);
 
   void memoryCachePolicy(
     int maxSize, {

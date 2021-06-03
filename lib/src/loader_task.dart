@@ -11,8 +11,8 @@ class LoaderTask {
   final UriLoader _loader;
   final Uri _uri;
   final File _save;
-  final Map<String, Object> _headers;
-  final ProgressListener _listener;
+  final Map<String, Object>? _headers;
+  final ProgressListener? _listener;
 
   LoaderTask(
     this._loader,
@@ -22,7 +22,7 @@ class LoaderTask {
     this._listener,
   );
 
-  Future<File> _result;
+  Future<File>? _result;
 
   Future<File> get result {
     return _result ??= _execute();

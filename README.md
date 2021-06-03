@@ -24,10 +24,11 @@ class ImagePage extends StatelessWidget {
   ImagePage(
     this.uri, {
     this.title = 'image demo',
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final String title;
+
   final Uri uri;
 
   @override
@@ -62,7 +63,7 @@ import 'package:flutter/material.dart';
 class DownloadPage extends StatefulWidget {
   DownloadPage(
     this.uri, {
-    Key key,
+    Key? key,
     this.title = 'download demo',
   }) : super(key: key);
 
@@ -74,7 +75,7 @@ class DownloadPage extends StatefulWidget {
 }
 
 class _DownloadPageState extends State<DownloadPage> {
-  File _file;
+  File? _file;
   int _percent = 0;
 
   Future<void> _handlerClick() async {

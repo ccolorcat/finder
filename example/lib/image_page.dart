@@ -8,7 +8,7 @@ class ImagePage extends StatelessWidget {
   ImagePage(
     this.uri, {
     this.title = 'image demo',
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   final String title;

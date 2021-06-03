@@ -17,8 +17,8 @@ const _package = 'package';
 const _name = 'name';
 
 Uri withAsset({
-  @required String assetName,
-  String packageName,
+  required String assetName,
+  String? packageName,
 }) {
   return Uri(
     scheme: kScheme,
@@ -30,11 +30,11 @@ Uri withAsset({
 
 FutureOr<File> resolveAsset(Uri uri, Directory root) async {
   _checkAsset(uri);
-  final queryies = uri.queryParameters;
-  final package = queryies[_package];
-  final asset = queryies[_name];
+  final queries = uri.queryParameters;
+  final package = queries[_package];
+  final asset = queries[_name]!;
 
-  var fileName = package.isEmpty ? asset : '$package/$asset';
+  var fileName = package?.isNotEmpty == true ? '$package/$asset' : asset;
   fileName = fileName.replaceAll('/', '_');
   return File('${root.path}/$fileName');
 }
@@ -42,15 +42,16 @@ FutureOr<File> resolveAsset(Uri uri, Directory root) async {
 Future<File> loadAsset(
   Uri uri,
   File save, {
-  Map<String, Object> headers,
-  ProgressListener listener,
+  Map<String, Object>? headers,
+  ProgressListener? listener,
 }) async {
   _checkAsset(uri);
-  final queryies = uri.queryParameters;
-  final package = queryies[_package];
-  final asset = queryies[_name];
+  final queries = uri.queryParameters;
+  final package = queries[_package];
+  final asset = queries[_name]!;
 
-  final keyName = package.isEmpty ? asset : 'packages/$package/$asset';
+  final keyName =
+      package?.isNotEmpty == true ? 'packages/$package/$asset' : asset;
   final byteData = await rootBundle.load(keyName);
   await save.writeAsBytes(
     byteData.buffer.asUint8List(
